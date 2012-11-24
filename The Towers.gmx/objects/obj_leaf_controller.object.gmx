@@ -47,9 +47,28 @@
             <kind>1</kind>
             <string>Leaves = 100
 Circles = 1
-LeafImages = 10
+LeafImages = 18
 InitCircleSize = max(room_height,room_width)/3
 LeafImageScale = 1
+
+CNOSTleafimage[0] = spr_leaf1
+CNOSTleafimage[1] = spr_leaf2
+CNOSTleafimage[2] = spr_leaf3
+CNOSTleafimage[3] = spr_leaf4
+CNOSTleafimage[4] = spr_leaf5
+CNOSTleafimage[5] = spr_leaf6
+CNOSTleafimage[6] = spr_leaf7
+CNOSTleafimage[7] = spr_leaf8
+CNOSTleafimage[8] = spr_leaf9
+CNOSTleafimage[9] = spr_leaf10
+CNOSTleafimage[10] = spr_leaf11
+CNOSTleafimage[11] = spr_leaf12
+CNOSTleafimage[12] = spr_leaf13
+CNOSTleafimage[13] = spr_leaf14
+CNOSTleafimage[14] = spr_leaf15
+CNOSTleafimage[15] = spr_leaf16
+CNOSTleafimage[16] = spr_leaf17
+CNOSTleafimage[17] = spr_leaf18
 </string>
           </argument>
         </arguments>
@@ -330,7 +349,7 @@ for(c = 0; c &lt; Circles; c += 1)
 {
     for(l = 0; l &lt; LeavesPerCircle; l += 1)
     {
-        draw_sprite_ext(spr_leaf,LeafNo[l],LeafX[l],LeafY[l],LeafSize[l],LeafSize[l],LeafAngle[l],LeafColor[l],LeafAlpha[l])
+        draw_sprite_ext(CNOSTleafimage[LeafNo[l]],1,LeafX[l],LeafY[l],LeafSize[l],LeafSize[l],LeafAngle[l],LeafColor[l],LeafAlpha[l])
         draw_set_color(c_red)
         draw_circle(LeafCenterX[l],LeafCenterY[l],5,false)
         /*sprite_index = spr_leaf

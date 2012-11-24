@@ -78,7 +78,10 @@ if room = rm_leaves
             <string>timer -= 1
 
 if timer &lt; 0
+{
+    show_debug_message("LOL")
     room = room_next(room)
+}
 </string>
           </argument>
         </arguments>

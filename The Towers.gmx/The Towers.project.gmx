@@ -9,6 +9,27 @@
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\sprite1</sprite>
+    <sprite>sprites\spr_mountains</sprite>
+    <sprites name="Leaves">
+      <sprite>sprites\spr_leaf18</sprite>
+      <sprite>sprites\spr_leaf17</sprite>
+      <sprite>sprites\spr_leaf16</sprite>
+      <sprite>sprites\spr_leaf15</sprite>
+      <sprite>sprites\spr_leaf14</sprite>
+      <sprite>sprites\spr_leaf13</sprite>
+      <sprite>sprites\spr_leaf12</sprite>
+      <sprite>sprites\spr_leaf11</sprite>
+      <sprite>sprites\spr_leaf10</sprite>
+      <sprite>sprites\spr_leaf9</sprite>
+      <sprite>sprites\spr_leaf8</sprite>
+      <sprite>sprites\spr_leaf7</sprite>
+      <sprite>sprites\spr_leaf6</sprite>
+      <sprite>sprites\spr_leaf5</sprite>
+      <sprite>sprites\spr_leaf4</sprite>
+      <sprite>sprites\spr_leaf3</sprite>
+      <sprite>sprites\spr_leaf2</sprite>
+      <sprite>sprites\spr_leaf1</sprite>
+    </sprites>
     <sprite>sprites\spr_leaf</sprite>
   </sprites>
   <backgrounds name="background">
@@ -17,11 +38,14 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\leaf_ball.gml</script>
+    <script>scripts\leaf_crazytornado.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\font0</font>
   </fonts>
   <objects name="objects">
+    <object>objects\obj_mountains</object>
+    <object>objects\obj_spin</object>
     <object>objects\obj_texture_loader</object>
     <object>objects\obj_leaf_controller</object>
     <object>objects\object3</object>
@@ -30,6 +54,7 @@
   <rooms name="rooms">
     <room>rooms\room1</room>
     <room>rooms\rm_leaves</room>
+    <room>rooms\room_mountains</room>
     <room>rooms\room2</room>
   </rooms>
   <help>

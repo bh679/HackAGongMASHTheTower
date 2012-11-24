@@ -7,9 +7,9 @@
   <sepmasks>0</sepmasks>
   <bboxmode>0</bboxmode>
   <bbox_left>0</bbox_left>
-  <bbox_right>783</bbox_right>
+  <bbox_right>1376</bbox_right>
   <bbox_top>0</bbox_top>
-  <bbox_bottom>783</bbox_bottom>
+  <bbox_bottom>1654</bbox_bottom>
   <HTile>0</HTile>
   <VTile>0</VTile>
   <TextureGroup>0</TextureGroup>
@@ -25,5 +25,13 @@
     <frame index="7">images\spr_leaf_7.png</frame>
     <frame index="8">images\spr_leaf_8.png</frame>
     <frame index="9">images\spr_leaf_9.png</frame>
+    <frame index="10">images\spr_leaf_10.png</frame>
+    <frame index="11">images\spr_leaf_11.png</frame>
+    <frame index="12">images\spr_leaf_12.png</frame>
+    <frame index="13">images\spr_leaf_13.png</frame>
+    <frame index="14">images\spr_leaf_14.png</frame>
+    <frame index="15">images\spr_leaf_15.png</frame>
+    <frame index="16">images\spr_leaf_16.png</frame>
+    <frame index="17">images\spr_leaf_17.png</frame>
   </frames>
 </sprite>
