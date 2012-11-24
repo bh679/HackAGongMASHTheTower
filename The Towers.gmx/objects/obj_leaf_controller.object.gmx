@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -47,9 +47,9 @@
             <kind>1</kind>
             <string>Leaves = 100
 Circles = 1
-LeafImages = 2
-InitCircleSize = 200
-
+LeafImages = 10
+InitCircleSize = max(room_height,room_width)/3
+LeafImageScale = 1
 </string>
           </argument>
         </arguments>
@@ -146,11 +146,19 @@ for(c = 0; c &lt; Circles; c += 1)
         LeafCircleAngle[l] = l/LeavesPerCircle * 360;
         LeafX[l] = CircleX[c] + lengthdir_x(LeafCircleDistance[l],LeafCircleAngle[l]);
         LeafY[l] = CircleY[c] + lengthdir_y(LeafCircleDistance[l],LeafCircleAngle[l]);
-        LeafSize[l] = 0.1;
+        LeafSize[l] = 1;
         LeafAngle[l] = point_direction(LeafX[l],LeafY[l],CircleX[c],CircleY[c]);
+        show_debug_message(LeafAngle[0])
         LeafNo[l] = random(LeafImages) mod LeafImages
-        LeafColor[l] = make_color(0,100+random(155),0)
+        LeafColor[l] = noone;//make_color(0,100+random(155),0)
         LeafAlpha[l] = 1
+        LeafRand[l] = random(100)
+        LeafFocus[l] = 1
+        LeafVSpeed[l] = 1
+        LeafHSpeed[l] = 0
+        LeafConst[l] = 0
+        LeafCenterX[l] = CircleX[c]
+        LeafCenterY[l] = CircleY[c]
     }
 }
 </string>
@@ -196,6 +204,8 @@ for(c = 0; c &lt; Circles; c += 1)
           <argument>
             <kind>1</kind>
             <string>Time += 1
+for(l = 0; l &lt; Leaves; l += 1)
+    LeafConst[l] += 1 * LeafFocus[l]
 </string>
           </argument>
         </arguments>
@@ -218,8 +228,9 @@ for(c = 0; c &lt; Circles; c += 1)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>LeavesPerCircle = floor(Leaves/Circles)
-
+            <string>if room != rm_leaves
+    exit
+    
 for(c = 0; c &lt; Circles; c += 1)
 {
     //CircleX[c] = room_width/2
@@ -228,14 +239,66 @@ for(c = 0; c &lt; Circles; c += 1)
 
     for(l = 0; l &lt; LeavesPerCircle; l += 1)
     {
-        LeafCircleDistance[l] = CircleSize[c] + cos(Time/100)*150;
-        LeafCircleAngle[l] = l/LeavesPerCircle * 360 + Time*CircleSpeed;
-        LeafX[l] = CircleX[c] + lengthdir_x(LeafCircleDistance[l] + cos(degtorad(LeafCircleAngle[l]*10 + Time*2)) * 40*sin(Time/5), LeafCircleAngle[l]);
-        LeafY[l] = CircleY[c] + lengthdir_y(LeafCircleDistance[l] + cos(degtorad(LeafCircleAngle[l]*10 + Time*2)) * 40*sin(Time/5), LeafCircleAngle[l]);
-        LeafAngle[l] = point_direction(LeafX[l],LeafY[l],CircleX[c],CircleY[c]);
-        LeafSize[l] = 1// + (sin(CircleX[c]/10)/4 - 1/4)
-        LeafAlpha[l] = 1 + sin(LeafAngle[l])/4 - 1/4
+        LeafCircleDistance[l] = CircleSize[c] - cos(LeafConst[l]/100 + LeafRand[l])*(InitCircleSize - InitCircleSize/10);
+        if l mod 2
+            LeafCircleAngle[l] = l/LeavesPerCircle * 360 + LeafConst[l]*CircleSpeed;
+        else
+            LeafCircleAngle[l] = l/LeavesPerCircle * 360 - LeafConst[l]*CircleSpeed;
+        LeafSize[l] = sqrt(((LeafCircleDistance[l] - InitCircleSize/20)/CircleSize[c])/2) * LeafImageScale
+        //LeafAngle[l] = point_direction(LeafX[l],LeafY[l],room_width/2,room_height/2);
+        //LeafSize[l] = max(LeafCircleDistance[l]/80,1) + (sin(LeafX[l]/10) + 1)
+        //LeafAlpha[l] = 1 + sin(LeafAngle[l])/4 - 1/4
+        if LeafFocus[l] &lt; 1
+            LeafFocus[l] += 0.02
+            
+        //if LeafVSpeed[l] &gt; 0
+        //    LeafVSpeed[l] -= 0.01
+        LeafVSpeed[l] +=  LeafSize[l]/2// * 1-LeafFocus[l]
+        //freedo whatever
+        if LeafFocus[l] &lt; 1
+        {    
+            LeafX[l] += LeafHSpeed[l];
+            LeafY[l] += LeafVSpeed[l];
+            LeafCenterX[l] = LeafX[l]
+            LeafCenterY[l] = LeafY[l]
+                
+        }
+        //follow path
+        else
+        {
+        
+            if  LeafCenterX[l] != CircleX[c] or LeafCenterY[l] != CircleY[c]
+            {
+                //x
+                if  LeafCenterX[l] &lt; CircleX[c]
+                    LeafCenterX[l] = min(LeafCenterX[l] + 10, CircleX[c])
+                else if  LeafCenterX[l] &gt; CircleX[c]
+                    LeafCenterX[l] = max(LeafCenterX[l] - 10, CircleX[c])
+
+                //y
+                if  LeafCenterY[l] &lt; CircleY[c]
+                    LeafCenterY[l] = min(LeafCenterY[l] + 10, CircleY[c])
+                else if  LeafCenterY[l] &gt; CircleY[c]
+                    LeafCenterY[l] = max(LeafCenterY[l] - 10, CircleY[c])
+            }
+            
+            LeafX[l] = LeafCenterX[l] + lengthdir_x(LeafCircleDistance[l], LeafCircleAngle[l]);
+            LeafY[l] = LeafCenterY[l] + lengthdir_y(LeafCircleDistance[l], LeafCircleAngle[l]);
+            LeafVSpeed[l] = 0
+        }
     }
+}
+
+if mouse_check_button(mb_left) //mouse_check_button_pressed(mb_left)
+{
+    counter = 0
+    do
+    {
+        counter += 1
+        l = random(Leaves) mod Leaves
+    }
+    until((LeafFocus[l] &gt; 0.1 and LeafY[l] &lt; room_height*3/4) or counter &gt; Leaves)
+    LeafFocus[l] = min(LeafFocus[l]-0.4,0)
 }
 </string>
           </argument>
@@ -259,11 +322,27 @@ for(c = 0; c &lt; Circles; c += 1)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>for(c = 0; c &lt; Circles; c += 1)
+            <string>if room != rm_leaves
+    exit
+    
+draw_sprite_ext(sprite1,0,0,0,1,1,0,noone,abs(sin(degtorad(Time))))
+for(c = 0; c &lt; Circles; c += 1)
 {
     for(l = 0; l &lt; LeavesPerCircle; l += 1)
     {
         draw_sprite_ext(spr_leaf,LeafNo[l],LeafX[l],LeafY[l],LeafSize[l],LeafSize[l],LeafAngle[l],LeafColor[l],LeafAlpha[l])
+        draw_set_color(c_red)
+        draw_circle(LeafCenterX[l],LeafCenterY[l],5,false)
+        /*sprite_index = spr_leaf
+        image_index = LeafNo[l]
+        x = LeafX[l]
+        y = LeafY[l]
+        image_xscale = LeafSize[l]
+        image_yscale = LeafSize[l]
+        image_angle = LeafAngle[l]
+        image_blend = LeafColor[l]
+        image_alpha = LeafAlpha[l]
+        draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,image_angle,image_blend,image_alpha)*/
     }
 }
 </string>
