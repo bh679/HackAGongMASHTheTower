@@ -250,6 +250,8 @@ for(l = 0; l &lt; Leaves; l += 1)
             <string>if room != rm_leaves
     exit
     
+leaf_crazytornado()
+   /* 
 for(c = 0; c &lt; Circles; c += 1)
 {
     //CircleX[c] = room_width/2
@@ -258,13 +260,35 @@ for(c = 0; c &lt; Circles; c += 1)
 
     for(l = 0; l &lt; LeavesPerCircle; l += 1)
     {
-        LeafCircleDistance[l] = CircleSize[c] - cos(LeafConst[l]/100 + LeafRand[l])*(InitCircleSize - InitCircleSize/10);
-        if l mod 2
-            LeafCircleAngle[l] = l/LeavesPerCircle * 360 + LeafConst[l]*CircleSpeed;
+        if  LeafCenterX[l] != CircleX[c] or LeafCenterY[l] != CircleY[c]
+        {
+            if LeafCircleDistance[l] &lt; CircleSize[c] - cos(LeafConst[l]/1000 + LeafRand[l])*(InitCircleSize - InitCircleSize/10)
+                LeafCircleDistance[l] += 10
+            else if LeafCircleDistance[l] &lt; CircleSize[c] - cos(LeafConst[l]/1000 + LeafRand[l])*(InitCircleSize - InitCircleSize/10)
+                LeafCircleDistance[l] += 10
+            else
+                LeafCircleDistance[l] = CircleSize[c] - cos(LeafConst[l]/1000 + LeafRand[l])*(InitCircleSize - InitCircleSize/10);
+        }
         else
-            LeafCircleAngle[l] = l/LeavesPerCircle * 360 - LeafConst[l]*CircleSpeed;
+            LeafCircleDistance[l] = CircleSize[c] - cos(LeafConst[l]/1000 + LeafRand[l])*(InitCircleSize - InitCircleSize/10);
+        
+        
+        if l mod 2
+        {
+            rotationspeed = 0
+            if Time mod (10*30) &lt; (5*30)
+                rotationspeed = min(rotationspeed + 0.01,0)
+            else
+                rotationspeed = max(rotationspeed - 0.01,-2)
+                
+            LeafConst[l] += rotationspeed
+                
+            LeafCircleAngle[l] = l/LeavesPerCircle * 360 + LeafConst[l]*CircleSpeed;
+        }
+        else
+            LeafCircleAngle[l] = l/LeavesPerCircle * 360 + LeafConst[l]*CircleSpeed;
         LeafSize[l] = sqrt(((LeafCircleDistance[l] - InitCircleSize/20)/CircleSize[c])/2) * LeafImageScale
-        //LeafAngle[l] = point_direction(LeafX[l],LeafY[l],room_width/2,room_height/2);
+        LeafAngle[l] = point_direction(LeafX[l],LeafY[l],room_width/2,room_height/2);
         //LeafSize[l] = max(LeafCircleDistance[l]/80,1) + (sin(LeafX[l]/10) + 1)
         //LeafAlpha[l] = 1 + sin(LeafAngle[l])/4 - 1/4
         if LeafFocus[l] &lt; 1
@@ -280,6 +304,7 @@ for(c = 0; c &lt; Circles; c += 1)
             LeafY[l] += LeafVSpeed[l];
             LeafCenterX[l] = LeafX[l]
             LeafCenterY[l] = LeafY[l]
+            LeafCircleDistance[l] = 1
                 
         }
         //follow path
@@ -307,7 +332,7 @@ for(c = 0; c &lt; Circles; c += 1)
         }
     }
 }
-
+*/
 if mouse_check_button(mb_left) //mouse_check_button_pressed(mb_left)
 {
     counter = 0
